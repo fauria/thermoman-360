@@ -1,0 +1,85 @@
+<!-- https://developer.mozilla.org/es/docs/Web/Guide/HTML/Canvas_tutorial/Dibujando_formas -->
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+  <style>
+  	#room{
+  		position:absolute;
+  		z-index:-1;
+  	}
+  </style>
+
+  <script type="text/javascript">
+
+  var temp = {
+
+  };
+
+ 	function draw() { 
+	  var canvas = document.getElementById('temperature');
+	  if (canvas.getContext) {
+	    var ctx = canvas.getContext('2d');
+	    ctx.font = "12px Arial";
+
+	    ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+	    ctx.fillRect(0,0,128,96);
+		ctx.fillStyle = "rgba(0, 0, 0, 1)";
+		ctx.fillText("25,2°",128*0+64-12, 96/2);
+
+	    ctx.fillStyle = "rgba(200, 50, 50, 0.5)";
+	    ctx.fillRect(128,0,128,96);
+	    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+		ctx.fillText("15,4°", 128*1+64-12, 96/2);
+
+		ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+	    ctx.fillRect(256,0,128,96);
+	    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+		ctx.fillText("-10,5°", 128*2+64-12, 96/2);
+
+	    
+	    
+	    
+	  }
+	}
+  </script>
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body onload="draw();">
+	<div id="container">
+		<img id="room" src="http://www.jrhuntleyhomes.com/wp-content/gallery/511-pace/014_Family-Room-640x480.jpg" alt="room">
+		<canvas id="temperature" width="640" height="480"></canvas>
+	</div>
+</body>
+</html>
+
+
+<!-- 
+- Sacar las temperaturas máxima y mínima.
+- Asignarles los colores según la escala.
+
+- Pintar gradiente en cada cuadrado, con respecto al siguiente:
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+var my_gradient=ctx.createLinearGradient(0,0,170,0);
+my_gradient.addColorStop(0,"black");
+my_gradient.addColorStop(0.5,"red");
+my_gradient.addColorStop(1,"white");
+ctx.fillStyle=my_gradient;
+ctx.fillRect(20,20,150,100);
+
+
+-->
