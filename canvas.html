@@ -1,55 +1,88 @@
-<!-- https://developer.mozilla.org/es/docs/Web/Guide/HTML/Canvas_tutorial/Dibujando_formas -->
+	<!-- https://developer.mozilla.org/es/docs/Web/Guide/HTML/Canvas_tutorial/Dibujando_formas -->
 <!doctype html>
 
 <html lang="en">
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
+  <title>Endesa Thermopan</title>
+  <meta name="description" content="Endesa Thermopan">
   <meta name="author" content="SitePoint">
 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
-
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-theme.css">
+  
+  <script type="text/javascript" src="js/lodash.js"></script>
+  <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+  
   <style>
+  	#container {
+  		margin: 1em 1em 1em 1em;
+  	}
   	#room{
   		position:absolute;
-  		z-index:-1;
+  		z-index:-1;  		
   	}
   </style>
 
   <script type="text/javascript">
-
-  var temp = {
-
-  };
-
- 	function draw() { 
-	  var canvas = document.getElementById('temperature');
-	  if (canvas.getContext) {
-	    var ctx = canvas.getContext('2d');
-	    ctx.font = "12px Arial";
-
-	    ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-	    ctx.fillRect(0,0,128,96);
-		ctx.fillStyle = "rgba(0, 0, 0, 1)";
-		ctx.fillText("25,2°",128*0+64-12, 96/2);
-
-	    ctx.fillStyle = "rgba(200, 50, 50, 0.5)";
-	    ctx.fillRect(128,0,128,96);
-	    ctx.fillStyle = "rgba(0, 0, 0, 1)";
-		ctx.fillText("15,4°", 128*1+64-12, 96/2);
-
-		ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
-	    ctx.fillRect(256,0,128,96);
-	    ctx.fillStyle = "rgba(0, 0, 0, 1)";
-		ctx.fillText("-10,5°", 128*2+64-12, 96/2);
-
-	    
-	    
-	    
-	  }
+	
+	var hue = [];
+	for(var i = 1; i<255; i+= 24){
+		hue.push(i);
 	}
+	
+	var pallete = _.chunk($.map(hue, function(v, i) { return [v, hue.reverse()[i]]; }), 2);
+
+ 	$(document).ready(function(){ 	
+
+ 		var temps = [];
+		var fakeRows = 6;
+		var fakeColumns = 6;	
+		for(var i = 0; i < fakeRows;  i++) {
+			var row = [];
+			for(var j = 0; j < fakeColumns; j++) {
+				var sample = Math.floor((Math.random() * 300) + 150)/10;
+				row.push(sample);
+			}
+			temps.push(row);
+		}	
+		
+		var max = _.max(_.flatten(temps));
+		var min = _.min(_.flatten(temps));  	
+
+		var rows = temps.length;
+		var cols = temps[0].length;
+
+ 		// Canvas para temperaturas.
+ 		var canvas = $("#temperature").get(0);		
+ 		
+		if (canvas.getContext) {
+			// Inicializar contexto y ajustes de fuentes.
+			var alpha = 0.4;			
+		    var ctx = canvas.getContext('2d');
+		    // ctx.globalAlpha = alpha;
+		    var fontSize = 12;
+		    ctx.font = fontSize+"px Arial";
+
+		    // Esperar a que cargue la foto para leer tamaño:
+		    $('#room').on('load',function(){
+
+				var width = this.width / fakeColumns;
+				var height = this.height / fakeRows;							
+				// Recorrer el arary de temperaturas:
+				for(var i = 0; i < rows; i++) {				
+					for(var j = 0; j < cols; j++) {
+						ctx.fillStyle = "rgba("+Math.ceil((Math.random() * 150) + 60)+", 0, "+Math.ceil((Math.random() * 134) + 120)+", "+alpha+")";
+					    ctx.fillRect(width*j,height*i,width,height);
+						ctx.fillStyle = "rgba(0, 0, 0, 1)";
+						ctx.fillText(temps[i][j], width*j+width/2-fontSize, (height/2)+(height*i)  );
+					}
+				}
+			});
+		}
+	});
+	
   </script>
 
   <!--[if lt IE 9]>
@@ -57,11 +90,22 @@
   <![endif]-->
 </head>
 
-<body onload="draw();">
-	<div id="container">
-		<img id="room" src="http://www.jrhuntleyhomes.com/wp-content/gallery/511-pace/014_Family-Room-640x480.jpg" alt="room">
-		<canvas id="temperature" width="640" height="480"></canvas>
+<body>
+	
+<div id="container">
+	<img id="room" src="http://www.jrhuntleyhomes.com/wp-content/gallery/511-pace/014_Family-Room-640x480.jpg" alt="room">
+	<canvas id="temperature" width="640" height="480"></canvas>	
+	<div style="float:right;clear:left;">
+		<h2>Alpha</h2>
+		<button id="plus" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+		<button id="minus" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span></button>
 	</div>
+</div>	
+
+		
+  		
+	
+		
 </body>
 </html>
 
