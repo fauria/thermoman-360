@@ -14,14 +14,21 @@
   
   <script type="text/javascript" src="js/lodash.js"></script>
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+  <script src="/socket.io/socket.io.js" type="text/javascript"></script>
   
   <style>
-  	#container {
-  		margin: 1em 1em 1em 1em;
-  	}
   	#room{
   		position:absolute;
-  		z-index:-1;  		
+  		top: 1em;
+  		margin-left: 1em;
+  		z-index: -1;  		
+  	}
+
+  	#heatmap{
+  		position:absolute;
+  		top: 1em;
+  		margin-left: 1em;
+  		z-index: 0;  		
   	}
   </style>
 
@@ -36,6 +43,12 @@
 
  	$(document).ready(function(){ 	
 
+ 		var socket = io.connect();
+
+ 		socket.on('end-scan', function (data) {
+			// update
+		});
+ 		/*
  		var temps = [];
 		var fakeRows = 6;
 		var fakeColumns = 6;	
@@ -46,21 +59,77 @@
 				row.push(sample);
 			}
 			temps.push(row);
-		}	
+		}
+		*/
+		
+		/*
+		var temps = [ [ 21.96, 26.16, 26.12, 24.92, 24.04 ],
+		  [ 23.22, 23.72, 25.78, 24.92, 23.74 ],
+		  [ 23.48, 24.1, 24.18, 24.94, 24.8 ],
+		  [ 23.54, 23.28, 23.04, 23.76, 23.22 ],
+		  [ 22.2, 21.48, 20.96, 21.16, 21.3 ] ];*/
+		  
+
+		  
+		var temps =  [ [ 22.36, 25.2, 26.8, 27.38, 26.02 ],
+  [ 25.34, 25.52, 27.44, 28.62, 27.2 ],
+  [ 25.72, 27.28, 28.54, 29.34, 27.8 ],
+  [ 26.1, 27.74, 28.2, 29.18, 28.52 ],
+  [ 27.6, 27.24, 27.52, 27.3, 28.48 ] ];
+
+
+  /*var temps = [ [ 22.16, 23.14, 23.72, 25.02, 26.04 ],
+  [ 26.76, 25.18, 24.22, 23.86, 23.64 ],
+  [ 24.32, 23.74, 23.18, 23.3, 23.12 ],
+  [ 23.96, 23.34, 22.28, 22.2, 22.34 ],
+  [ 22.26, 21.62, 21.92, 22.02, 21.8 ] ];*/
+
+
+		var scale1 = [
+			'215, 33, 29',
+			'205, 32, 31',
+			'188, 30, 39',
+			'172, 28, 48',
+			'156, 27, 60',
+			'135, 25, 80',
+			'109, 25, 108',
+			'90, 25, 132',
+			'69, 27, 164',
+			'54, 30, 191',
+			'37, 33, 225',
+			'30, 36, 247'
+		];
+
+		var scale = scale1.reverse();
+
+		var sample = [];
 		
 		var max = _.max(_.flatten(temps));
 		var min = _.min(_.flatten(temps));  	
+
+		var increment = (max - min)/scale.length;
+
+		for(var i = min; i<= max; i+=increment) {
+			sample.push(i);
+		}
+
+		console.log(sample);
+
+		
+		console.log(i);
+
+
 
 		var rows = temps.length;
 		var cols = temps[0].length;
 
  		// Canvas para temperaturas.
- 		var canvas = $("#temperature").get(0);		
+ 		var heatmap = $("#heatmap").get(0);		
  		
-		if (canvas.getContext) {
+		if (heatmap.getContext) {
 			// Inicializar contexto y ajustes de fuentes.
-			var alpha = 0.4;			
-		    var ctx = canvas.getContext('2d');
+			var alpha = 0.3;			
+		    var ctx = heatmap.getContext('2d');
 		    // ctx.globalAlpha = alpha;
 		    var fontSize = 12;
 		    ctx.font = fontSize+"px Arial";
@@ -68,19 +137,43 @@
 		    // Esperar a que cargue la foto para leer tamaño:
 		    $('#room').on('load',function(){
 
-				var width = this.width / fakeColumns;
-				var height = this.height / fakeRows;							
+				var width = this.width / cols;
+				var height = this.height / rows;							
+				var pos = 0;
 				// Recorrer el arary de temperaturas:
 				for(var i = 0; i < rows; i++) {				
 					for(var j = 0; j < cols; j++) {
-						ctx.fillStyle = "rgba("+Math.ceil((Math.random() * 150) + 60)+", 0, "+Math.ceil((Math.random() * 134) + 120)+", "+alpha+")";
+
+						// Casi no hay tiempo, refactor!!!
+						
+						for(pos = 0; pos < scale.length; pos++){
+							if(sample[pos] >= temps[i][j]){
+								break;
+							}
+						}
+						if(pos > 11){
+							pos = 11;
+						}
+
+						console.log("POS "+pos+" "+i+","+j);
+						ctx.fillStyle = "rgba("+scale[pos]+", "+alpha+")";
 					    ctx.fillRect(width*j,height*i,width,height);
-						ctx.fillStyle = "rgba(0, 0, 0, 1)";
+						ctx.fillStyle = "rgba(230, 230, 230, 1)";
 						ctx.fillText(temps[i][j], width*j+width/2-fontSize, (height/2)+(height*i)  );
 					}
 				}
 			});
 		}
+
+
+		$("#show").click(function(){
+			$("#heatmap").fadeIn('fast');
+		});
+
+		$("#hide").click(function(){
+			$("#heatmap").fadeOut('fast');
+		});
+
 	});
 	
   </script>
@@ -91,16 +184,32 @@
 </head>
 
 <body>
-	
-<div id="container">
-	<img id="room" src="http://www.jrhuntleyhomes.com/wp-content/gallery/511-pace/014_Family-Room-640x480.jpg" alt="room">
-	<canvas id="temperature" width="640" height="480"></canvas>	
-	<div style="float:right;clear:left;">
-		<h2>Alpha</h2>
-		<button id="plus" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
-		<button id="minus" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span></button>
+
+<div class="row">
+	<div class="col-md-9 col-sm-12">		
+		<div id="container">
+			<img id="room" src="hack.jpg" alt="room">
+			<canvas id="heatmap" width="640" height="480"></canvas>									
+		</div>		
 	</div>
-</div>	
+	<div class="col-md-3 col-sm-12">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Opacity</h2>
+				<button id="plus" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+				<button id="minus" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span></button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Visibility</h2>
+				<button id="show" type="button" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-eye-open"></span> Show</button>
+				<button id="hide" type="button" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-eye-close"></span> Hide</button>		
+			</div>
+		</div>									
+	</div>
+</div>
 
 		
   		
