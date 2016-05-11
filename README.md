@@ -56,7 +56,7 @@ For this project, we relied on the following parts:
 
 # Software
 
-![Thermoman in action](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/thermoman-action.gif)
+![Thermoman actual picture](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/thermoman-action.gif)
 
 We developed an Arduino sketch that performed a scan using the pan-tilt head. Knowing the field of view of the sensor is 10°.
 
