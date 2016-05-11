@@ -11,7 +11,7 @@ The event was sponsored by [Endesa](http://www.endesaenergychallenges.com/) and 
 
 # The idea
 
-![Idea draft](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/the_idea.jpg)
+![Idea draft](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/idea.jpg)
 
 Our project was defined as *"An application that locates inefficiencies and energy loss within the home through the use of a thermographic sensor that detects differences in temperature"*
 
@@ -21,13 +21,13 @@ This data, cross-referenced with external inputs, would generate recommendations
 
 # The team
 
-![Thermoman 360 team members](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/the_team.jpg)
+![Thermoman 360 team members](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/winners.jpg)
 
 Meet the team:
 
 - Fernando Álvarez-Uría, Software Engineer. <fauria@gmail.com>. Twitter: [@fauria](https://twitter.com/fauria)
 - Nuño Valencia, Industrial Engineer. <info@nunovalencia.info> Twitter: [@NuoValencia](https://twitter.com/NuoValencia)
-- Andrea Jiménez, Business Analyst <andreaj.567@gmail.com>.
+- Andrea Jiménez, Business Analyst <andreaj.567@gmail.com>. Twitter: [@](https://twitter.com /eatgreekspeakfr)
 - Diego Lasaosa, Architect. <diegolasaosa@certicalia.com > Twitter: [@diegolasaosa](https://twitter.com/diegolasaosa)
 
 
@@ -49,6 +49,7 @@ For this project, we relied on the following parts:
 - [Raspberry Pi Camera Module](https://www.raspberrypi.org/products/camera-module/).
 - Two servos
 - Arduino Uno
+- Grove Protoshield
 - Pan-til head
 - MLX 90614 digital thermopile with 10° Field of View (FOV).
 
@@ -57,21 +58,21 @@ For this project, we relied on the following parts:
 
 We developed an Arduino sketch that performed a scan using the pan-tilt head. Knowing the field of view of the sensor is 10°.
 
-## Future improvements
+# Future improvements
 
 - Enclosing
 - Data link
 
 # The prototype
 
-![Fully functional prototype](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/the_prototype.jpg)
+![Fully functional prototype](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/prototype.gif)
 
 For the assembly of the prototype, we used a protoboard as a base, and a piece of foam to hold both the MLX 90614 and the Raspberry Pi Camera module.
 
 
 # The pitch
 
-![Thermoman 360 team in front of the jury](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/the_pitch.jpg)
+![Thermoman 360 team in front of the jury](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/pitch.jpg)
 
 The jury was formed by:
 
@@ -80,7 +81,7 @@ The jury was formed by:
 
 # Awards
 
-![Endesa Hackathon Winners](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/winners.jpg)
+![Endesa Hackathon Winners](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/winners-all.jpg)
 
 We won the first prize, awarded with 6.000€ for the team.
 
