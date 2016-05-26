@@ -27,17 +27,16 @@ Meet the team:
 
 - Fernando Álvarez-Uría, Software Engineer. <fauria@gmail.com>. Twitter: [@fauria](https://twitter.com/fauria)
 - Nuño Valencia, Industrial Engineer. <info@nunovalencia.info> Twitter: [@NuoValencia](https://twitter.com/NuoValencia)
-- Andrea Jiménez, Business Analyst <andreaj.567@gmail.com>. Twitter: [@](https://twitter.com /eatgreekspeakfr)
-- Diego Lasaosa, Architect. <diegolasaosa@certicalia.com > Twitter: [@diegolasaosa](https://twitter.com/diegolasaosa)
+- Andrea Jiménez, Business Analyst <andreaj.567@gmail.com>. Twitter: [@ eatgreekspeakfr](https://twitter.com /eatgreekspeakfr)
+- Diego Lasaosa, Architect. <diegolasaosa@certicalia.com> Twitter: [@diegolasaosa](https://twitter.com/diegolasaosa)
 
+The teams were already pre-assigned before the event, although we hadn't met before.
 
-The teams were already pre-assigned before the event, altough we didn't know each other beforehand.
-
-At the entrance, the organisation handed each participant a kit, containing among other goodies one piece of a puzzle. 
+At the entrance, the organisation handed each participant a hackathon kit, containing among other goodies one piece from a puzzle. 
 
 The hackathon members teamed up by matching their puzzle pieces during a networking session. 
 
-Each one had a superhero assigned, and ours was Ironman.
+Each one had a superhero assigned, and ours was Ironman, thus the name of the project.
 
 # Hardware
 
@@ -47,29 +46,50 @@ For this project, we relied on the following parts:
 
 - [Raspberry Pi](https://www.raspberrypi.org/) model B, with GPIO header break out.
 - [Raspberry Pi Camera Module](https://www.raspberrypi.org/products/camera-module/).
-- Two servos
-- Arduino Uno
-- Grove Protoshield
-- Pan-til head
-- MLX 90614 digital thermopile with 10° Field of View (FOV).
+- [Arduino Uno board](https://www.arduino.cc/en/main/arduinoBoardUno).
+- [Grove Base Shield](http://www.seeedstudio.com/depot/Base-Shield-V2-p-1378.html)
+- Melexis MLX 90614 digital thermopile with 10° Field of View (FOV). Based on this project, an [infrared thermometer Grove module](http://www.seeed.cc/project_detail.html?id=1157) was later produced.
+- Pan-tilt head, composed by two servos.
+- Protoboards
 
+The thermographic camera consisted on a piece of foam with both the camera and the sensor attached in a 90° angle arrangement.
+
+This way, alternating the vertical servo between 0° and 90° allowd the usage of both the camera and the sensor.
 
 # Software
 
 ![Thermoman actual picture](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/thermoman-action.gif)
 
-We developed an Arduino sketch that performed a scan using the pan-tilt head. Knowing the field of view of the sensor is 10°.
+We developed an Arduino sketch that performed a scan using the pan-tilt head. 
+
+Knowing the field of view of the sensor was 10° on both axis, and the camera FOV 53.50° and 41.41° on X and Y respectively, we coud estimate a matrix of sensor readings. 
+
+This approach was not very pricese, but enough for a proof of concept.
+
+The Raspberry Pi runned a Node.js application, communicating with Arduino via USB serial terminal. Events were used to coordinate the different actions.
+
+A web interface displayed the results, using an HTML5 canvas for the readings.
 
 # Future improvements
 
-- Enclosing
-- Data link
+The prototype was just a proof of concept. 
+
+A potential commercial application should be efficient, able to perform readings in 360° and easly integrable in a home among many others.
 
 # The prototype
 
 ![Fully functional prototype](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/prototype.gif)
 
-For the assembly of the prototype, we used a protoboard as a base, and a piece of foam to hold both the MLX 90614 and the Raspberry Pi Camera module.
+For the assembly of the prototype we used a protoboard as a base, with the pant-tilt head, sensor foam setup and Raspberry Pi attached.
+
+To perform a thermal image, the following steps were taken from the Node.js application on the Raspberry Pi:
+
+1. Send a ```snap```command to Arduino to move the vertical servo to 90° and the horizontal servo to 180°. The camera should be looking forward.
+2. [Take a picture](https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md)
+3. Send a ```reset``` command to Arduino to put both servos on ```0,0``` coordinates.
+4. Send a ```scan``` command to Arduino. Now the servos start moving in increments, performing a sendor reading on each step. A JSON encoded string is sent back to the Raspberry Pi.
+5. Send a ``neutral``` command to Arduino. This sets both servos on 90°.
+6. Parse the JSON string sent from Arduino and display the image taken with a canvas overly showing the temperatures.
 
 
 # The pitch
@@ -80,12 +100,21 @@ The jury was formed by:
 
 **Juan Garrigosa** (Head of Innovation at Endesa), **Sandra Alfonso** (Head of Digital Market Transformation at Endesa), **Jorge Sánchez-Mayoral** (Digital Channel Director & Customer Experience at Endesa), **Enrique Dans** (Professor at IE Business School), **Antonio Fontanini** (Cex Advisor and Chief Optimistic Officer at Opinno), **Alberto Levy** (Innovation Evangelist) and **Javier Noguerol** (Senior researcher at Future Doers).
 
+The pitch consisted on a five minutes talk, and altought the prototype could not be used live, the results were shown on the presentation.
 
 # Awards
 
 ![Endesa Hackathon Winners](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/winners-all.jpg)
 
-We won the first prize, awarded with 6.000€ for the team.
+We won the first prize, awarded with 6.000€ for the team and four wooden table lamps, one for each member.
+
+# Afterwork
+
+![Endesa Hackathon Winners](https://raw.githubusercontent.com/fauria/thermoman-360/master/assets/exit-madrid.jpg)
+
+After the prize-giving, the hackathon participants were taken to a special afterwork, held in [Exit Madrid](http://exit-game.es/?lang=en). It consisted on a *escape room* game, were we had to solver serveral puzzles inside a locked room before a certain deadline.
+
+We had a great time there, working again together, but this time on a very different problem.
 
 # Coverage
 
