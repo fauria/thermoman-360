@@ -27,7 +27,7 @@ Meet the team:
 
 - Fernando Álvarez-Uría, Software Engineer. <fauria@gmail.com>. Twitter: [@fauria](https://twitter.com/fauria)
 - Nuño Valencia, Industrial Engineer. <info@nunovalencia.info> Twitter: [@NuoValencia](https://twitter.com/NuoValencia)
-- Andrea Jiménez, Business Analyst <andreaj.567@gmail.com>. Twitter: [@ eatgreekspeakfr](https://twitter.com /eatgreekspeakfr)
+- Andrea Jiménez, Business Analyst <andreaj.567@gmail.com>. Twitter: [@eatgreekspeakfr](https://twitter.com /eatgreekspeakfr)
 - Diego Lasaosa, Architect. <diegolasaosa@certicalia.com> Twitter: [@diegolasaosa](https://twitter.com/diegolasaosa)
 
 The teams were already pre-assigned before the event, although we hadn't met before.
